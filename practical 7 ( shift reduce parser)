@@ -1,0 +1,71 @@
+AIM: TO IMPLEMENT SHIFT REDUCE PARSER
+S/W: C++
+
+#include <string.h>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    char str[20];
+    char stack[20];
+    char top = 0;
+    cout << "Given grammer is:\nS-> aABe\nA->Abc/b\nB->d" << endl;
+    cout << "Enter String" << endl;
+    cin >> str;
+    cout << "Stack\t\t\t Input Buffer\t\t\t Action" << endl;
+    cout << "___________________" << endl;
+    stack[top] = '$';
+    top++;
+    cout << "$\t\t\tabbcde$\t\t\tShift" << endl;
+    stack[top] = str[0];
+    top++;
+    cout << "$a\t\t\tbbcde$\t\t\tShift" << endl;
+    stack[top] = str[1];
+    if (stack[top] == 'b')
+    {
+        cout << "$ab\t\t\tbcde$\t\t\tReduce" << endl;
+        stack[top] = 'A';
+        top++;
+
+        cout << "$aA\t\t\tabbcde$\t\t\tShift" << endl;
+        stack[top] = 'b';
+        top++;
+
+        cout << "$aAb\t\t\tcde$\t\t\tShift" << endl;
+        stack[top] = 'c';
+        top++;
+
+        cout << "$aAbc\t\t\tde$\t\t\tReduce" << endl;
+    }
+
+    if ((stack[top] == 'c') && (stack[top - 1] == 'b'))
+    {
+        top = top - 2;
+        cout << "$aA\t\t\tde$\t\t\tShift" << endl;
+        top++;
+        stack[top] = 'd';
+        cout << "$aAd\t\t\te$\t\t\tReduce" << endl;
+    }
+
+    if (stack[top] == 'd')
+    {
+        stack[top] = 'B';
+        cout << "$aAB\t\t\te$\t\t\tShift" << endl;
+        top++;
+        stack[top] = 'e';
+        cout << "$aABe\t\t\t$\t\t\tReduce" << endl;
+        top = top - 4;
+        stack[top] = 'S';
+        cout << "$s\t\t\t$\t\t\tACCEPT" << endl;
+    }
+    if (stack[top] = '$')
+    {
+        cout << "String is valid." << endl;
+    }
+    else
+    {
+        cout << "String is invalid." << endl;
+    }
+    return 0;
+}
